@@ -6,6 +6,9 @@
 	{% url 'home' as home %}
 	{% url 'about' as about %}
 	{% url 'contact' as contact %}
+	{% url 'account_login' as login %}
+	{% url 'account_signup' as signup %}
+	{% url 'account_logout' as logout %}
 	<a class="navbar-brand" href="{% url 'home' %}">Navbar</a>
 	<div class="collapse navbar-collapse" id="navbarTogglerDemo03">
 		<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
@@ -24,10 +27,27 @@
 			{% endif %}>
 				<a class="nav-link" href="{% url 'contact' %}">Contact</a>
 			</li>
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown"
+				   aria-haspopup="true" aria-expanded="false">
+					Account
+				</a>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+					{% if request.user.is_authenticated %}
+						<a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
+						<a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a>
+					{% else %}
+						<a class="dropdown-item" href="{% url 'account_login' %}">Login</a>
+						<a class="dropdown-item" href="{% url 'account_signup' %}">Sign Up</a>
+					{% endif %}
+
+				</div>
+			</li>
 		</ul>
 		<form class="form-inline my-2 my-lg-0">
-			<input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+			{% if request.user.is_authenticated %}
+				<label for="">Hello {{ request.user }}</label>
+			{% endif %}
 		</form>
 	</div>
 </nav>
